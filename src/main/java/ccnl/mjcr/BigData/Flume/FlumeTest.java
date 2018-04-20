@@ -1,6 +1,8 @@
 package ccnl.mjcr.BigData.Flume;
 
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.flume.Event;
 import org.apache.flume.EventDeliveryException;
@@ -12,13 +14,25 @@ public class FlumeTest {
 
 	public static void main(String[] args) {
 		
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = "";
 		MyRpcClient client = new MyRpcClient();
-		client.init("192.168.0.2", 34444);
-		String sampleData = "hello flume";
-		for(int i =0;i<10;i++)
+		client.init("192.168.0.2", 34443);
+		
+		String sampleData = "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
+		//String sampleData = "1234567890";
+		
+		client.sendDataToFlume(sampleData);
+		date = df.format(new Date());
+		System.out.println("start time: "+date);
+		
+		for(int i =0;i<1048575;i++)
 		{
 			client.sendDataToFlume(sampleData);
 		}
+		
+		date = df.format(new Date());
+		System.out.println("end time:"+date);
 		client.cleanUp();
 	}
 
